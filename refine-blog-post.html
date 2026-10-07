@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refine Blog Post</title>
+    <link rel="icon" href="spm.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,0,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #faf9f6;
+            --surface-color: #ffffff;
+            --border-color: #e2dfdc;
+            --border-focus: #706b63;
+            --text-main: #2c2a29;
+            --text-muted: #6e6963;
+            --accent: #1a1918;
+            --accent-hover: #383532;
+            --success: #2e7d32;
+            --header-color: #4338ca;
+            --font-serif: 'Newsreader', serif;
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .document-container {
+            max-width: 760px;
+            margin: 0 auto;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 48px 40px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.02);
+        }
+
+        .doc-header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 30px;
+        }
+
+        .doc-title {
+            font-family: var(--font-serif);
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: var(--header-color);
+            margin-bottom: 8px;
+        }
+
+        .doc-subtitle {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .section-heading {
+            font-family: var(--font-serif);
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin: 36px 0 16px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .prompt-card {
+            margin-bottom: 24px;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .prompt-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .prompt-title {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .prompt-preview {
+            width: 100%;
+            min-height: 180px;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 16px;
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            color: var(--text-main);
+            line-height: 1.65;
+            resize: vertical;
+            white-space: pre-wrap;
+            margin-bottom: 12px;
+        }
+
+        .prompt-preview:focus {
+            outline: none;
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(112, 107, 99, 0.1);
+        }
+
+        .copy-btn {
+            background: var(--accent);
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease;
+        }
+
+        .copy-btn:hover {
+            background: var(--accent-hover);
+        }
+
+        .copy-btn:active {
+            transform: translateY(1px);
+        }
+
+        .copy-btn.copied {
+            background: var(--success);
+        }
+
+        .doc-footer {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 12px 8px;
+            }
+
+            .document-container {
+                padding: 24px 16px;
+                border-radius: 10px;
+            }
+
+            .doc-title {
+                font-size: 1.8rem;
+            }
+
+            .doc-subtitle {
+                font-size: 0.88rem;
+            }
+
+            .prompt-card {
+                padding: 16px;
+                margin-bottom: 20px;
+            }
+
+            .prompt-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .prompt-preview {
+                min-height: 220px;
+                font-size: 0.88rem;
+                padding: 14px;
+            }
+
+            .copy-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="document-container">
+
+        <header class="doc-header">
+            <h1 class="doc-title">Refine Blog Post</h1>
+            <p class="doc-subtitle">(to answer the readers question)</p>
+        </header>
+
+        <section>
+            <h2 class="section-heading">Prompts</h2>
+
+            <div class="prompt-card">
+                <div class="prompt-header">
+                    <span class="prompt-title">Prompt#1</span>
+                </div>
+                <textarea id="prompt1" class="prompt-preview" readonly>এই ব্লগের শুরু ও শেষ এমনভাবে লিখুন, যাতে এর মূল বক্তব্য পাঠকের কাছে একেবারে স্পষ্ট হয়ে ওঠে।</textarea>
+                <button class="copy-btn" onclick="copyPrompt('prompt1', this)">Copy to Clipboard</button>
+            </div>
+
+            <div class="prompt-card">
+                <div class="prompt-header">
+                    <span class="prompt-title">Prompt#2</span>
+                </div>
+                <textarea id="prompt2" class="prompt-preview" readonly>এই ব্লগের শুরু ও শেষ এমনভাবে পুনর্লিখুন, যাতে এর মূল বক্তব্য পাঠকের কাছে একেবারে স্পষ্ট হয়ে ওঠে। মূল অর্থ ও তথ্য অপরিবর্তিত রাখুন।</textarea>
+                <button class="copy-btn" onclick="copyPrompt('prompt2', this)">Copy to Clipboard</button>
+            </div>
+
+            <div class="prompt-card">
+                <div class="prompt-header">
+                    <span class="prompt-title">Prompt#3</span>
+                </div>
+                <textarea id="prompt3" class="prompt-preview" readonly>উপরের ব্লগের সব সেকশন ও প্যারাগ্রাফের শিরোনামকে আরও সংক্ষিপ্ত, পরিষ্কার, স্মরণযোগ্য এবং পাঠককেন্দ্রিক করে পুনর্লিখুন। সব শিরোনামে একই ভাষাভঙ্গি ও ছন্দ বজায় রাখুন। প্রতিটি শিরোনামের সঙ্গে এক লাইনে সেই সেকশনের উদ্দেশ্য লিখুন।
+
+এরপর সেকশনগুলোকে এমনভাবে সাজান, যাতে পাঠকের মূল প্রশ্নের উত্তর ধাপে ধাপে পরিষ্কার হয়। প্রয়োজন হলে কাছাকাছি বিষয়গুলোর সেকশন একত্র করে যৌক্তিক কয়েকটি অংশ তৈরি করুন। প্রতিটি অংশের জন্য একটি সংক্ষিপ্ত কেন্দ্রীয় প্রশ্ন এবং সেই অংশের সেকশনগুলোর প্রশ্ন-উত্তর প্রবাহ লিখুন।
+
+এক অংশ থেকে পরের অংশে যাওয়ার জন্য প্রয়োজন হলে একটি স্বাভাবিক সেতুবাক্য দিন।
+
+সবশেষে প্রতিটি সেকশনের একটি চূড়ান্ত শিরোনাম প্রস্তাব করুন। প্রশ্নধর্মী ও বিবৃতিধর্মী শিরোনাম থাকলে তাদের ভাষাভঙ্গি ও ছন্দের মধ্যে সামঞ্জস্য রাখুন।
+
+মূল লক্ষ্য:
+পাঠক যেন সহজে বুঝতে পারেন, প্রতিটি সেকশন কেন এসেছে, আগের অংশের সঙ্গে তার সম্পর্ক কী এবং পুরো ব্লগটি কীভাবে ধাপে ধাপে তাঁর প্রশ্নের উত্তর দিচ্ছে।
+
+অপ্রয়োজনীয় বিশ্লেষণ, অতিরিক্ত কাঠামো বা জটিল content strategy যোগ করবেন না।</textarea>
+                <button class="copy-btn" onclick="copyPrompt('prompt3', this)">Copy to Clipboard</button>
+            </div>
+
+            <div class="prompt-card">
+                <div class="prompt-header">
+                    <span class="prompt-title">Prompt#4</span>
+                </div>
+                <textarea id="prompt4" class="prompt-preview" readonly>Answer the following prompt in Bengali (India).
+
+Rules:
+- Use only Bengali (India).
+- Always address the reader as "আপনি".
+- Never use "তুমি" or "তুই".
+- Use a natural Kolkata-style conversational tone.
+- Use natural, modern Bengali (India).
+- Avoid Bangladeshi vocabulary, spelling, and expressions.
+
+PROMPT
+
+Read this as a seasoned writing editor who hates generic words and sentences. Point out anything vague, repetitive, or unnecessary.</textarea>
+                <button class="copy-btn" onclick="copyPrompt('prompt4', this)">Copy to Clipboard</button>
+            </div>
+
+            <div class="prompt-card">
+                <div class="prompt-header">
+                    <span class="prompt-title">Prompt#5</span>
+                </div>
+                <textarea id="prompt5" class="prompt-preview" readonly>Answer the following prompt in Bengali (India).
+
+Rules:
+- Use only Bengali (India).
+- Always address the reader as "আপনি".
+- Never use "তুমি" or "তুই".
+- Use a natural Kolkata-style conversational tone.
+- Use natural, modern Bengali (India).
+- Avoid Bangladeshi vocabulary, spelling, and expressions.
+
+PROMPT
+
+Now read it as you are reading this idea for the first time. Tell me where you are getting confused, lose interest, or have to read a sentence twice and what sounds too formal or unnatural?</textarea>
+                <button class="copy-btn" onclick="copyPrompt('prompt5', this)">Copy to Clipboard</button>
+            </div>
+
+            <div class="prompt-card">
+                <div class="prompt-header">
+                    <span class="prompt-title">Prompt#6</span>
+                </div>
+                <textarea id="prompt6" class="prompt-preview" readonly>Answer the following prompt in Bengali (India).
+
+Rules:
+- Use only Bengali (India).
+- Always address the reader as "আপনি".
+- Never use "তুমি" or "তুই".
+- Use a natural Kolkata-style conversational tone.
+- Use natural, modern Bengali (India).
+- Avoid Bangladeshi vocabulary, spelling, and expressions.
+
+PROMPT
+
+Now read it as someone who already knows about the subject. What feels basic to you?</textarea>
+                <button class="copy-btn" onclick="copyPrompt('prompt6', this)">Copy to Clipboard</button>
+            </div>
+
+            <div class="prompt-card">
+                <div class="prompt-header">
+                    <span class="prompt-title">Prompt#7</span>
+                </div>
+                <textarea id="prompt7" class="prompt-preview" readonly>Refine the blog post now based on the recommendations you provided in your three reviews.</textarea>
+                <button class="copy-btn" onclick="copyPrompt('prompt7', this)">Copy to Clipboard</button>
+            </div>
+
+            <div class="prompt-card">
+                <div class="prompt-header">
+                    <span class="prompt-title">Prompt#8</span>
+                </div>
+                <textarea id="prompt8" class="prompt-preview" readonly>review and rate this blog post.</textarea>
+                <button class="copy-btn" onclick="copyPrompt('prompt8', this)">Copy to Clipboard</button>
+            </div>
+
+            <div class="prompt-card">
+                <div class="prompt-header">
+                    <span class="prompt-title">Prompt#9</span>
+                </div>
+                <textarea id="prompt9" class="prompt-preview" readonly>এই অধ্যায়ের বানান, যতিচিহ্ন, বাক্যগঠন এবং পুনরাবৃত্তি পরীক্ষা করে শুধু প্রয়োজনীয় সংশোধনসহ একটি পরিষ্কার চূড়ান্ত সংস্করণ দিন। 
+RULE (MANDATORY)
+Don't use any horizontal lines and dividers.</textarea>
+                <button class="copy-btn" onclick="copyPrompt('prompt9', this)">Copy to Clipboard</button>
+            </div>
+
+            <div class="prompt-card">
+                <div class="prompt-header">
+                    <span class="prompt-title">Prompt#10</span>
+                </div>
+                <textarea id="prompt10" class="prompt-preview" readonly>এই চূড়ান্ত অধ্যায়টা প্রকাশনা-উপযোগী ফরম্যাটে সাজিয়ে দিন—শিরোনাম, উপশিরোনাম, অনুচ্ছেদ, বুলেট, টেবিল এবং উদ্ধৃতিগুলোর সামঞ্জস্যপূর্ণ বিন্যাসসহ।
+RULE (MANDATORY)
+Don't use any horizontal lines and dividers.
+Don't mention the source. No citation is needed.</textarea>
+                <button class="copy-btn" onclick="copyPrompt('prompt10', this)">Copy to Clipboard</button>
+            </div>
+
+        </section>
+
+        <footer class="doc-footer">
+            Copyright &copy; <script>document.write(new Date().getFullYear())</script> Siva Prasad Mukherjee. All Rights Reserved.
+        </footer>
+
+    </div>
+
+    <script>
+        function copyPrompt(id, button) {
+            const outputBox = document.getElementById(id);
+            const originalText = button.textContent;
+
+            navigator.clipboard.writeText(outputBox.value).then(() => {
+                button.textContent = '✓ Copied!';
+                button.classList.add('copied');
+
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            }).catch(() => {
+                outputBox.focus();
+                outputBox.select();
+                outputBox.setSelectionRange(0, 99999);
+                document.execCommand('copy');
+
+                button.textContent = '✓ Copied!';
+                button.classList.add('copied');
+
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            });
+        }
+    </script>
+
+</body>
+</html>
